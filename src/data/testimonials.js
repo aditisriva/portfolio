@@ -1,0 +1,38 @@
+export const testimonials = [
+  {
+    id: 1,
+    name: 'Rahul Sharma',
+    role: 'Senior Developer',
+    company: 'GoToSIOC Technologies',
+    avatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=100&h=100&fit=crop&crop=face',
+    text: 'Aditi is one of the most dedicated developers I have mentored. Her ability to pick up new technologies and deliver production-ready code is impressive for her experience level. The Civic Connect platform she built is genuinely useful.',
+    rating: 5,
+  },
+  {
+    id: 2,
+    name: 'Priya Verma',
+    role: 'Project Lead',
+    company: 'NIELIT, Haridwar',
+    avatar: 'https://images.unsplash.com/photo-1494790108755-2616b612b47c?w=100&h=100&fit=crop&crop=face',
+    text: 'During her internship at NIELIT, Aditi showed exceptional enthusiasm for learning. She grasped HTML, CSS, and JavaScript rapidly and delivered her projects ahead of schedule. A great team player with strong fundamentals.',
+    rating: 5,
+  },
+  {
+    id: 3,
+    name: 'Amit Agrawal',
+    role: 'Business Owner',
+    company: 'TipTop Dresses',
+    avatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&h=100&fit=crop&crop=face',
+    text: 'Aditi built our e-commerce website and the result exceeded our expectations. The site looks professional, loads fast, and our customers love it. She was responsive, professional, and delivered exactly what we needed.',
+    rating: 5,
+  },
+  {
+    id: 4,
+    name: 'Dr. Meena Singh',
+    role: 'Professor, CS Department',
+    company: 'IET, Dr. B.A. University',
+    avatar: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=100&h=100&fit=crop&crop=face',
+    text: 'Aditi has consistently been among the top performers in our department. Her project work demonstrates a strong grasp of both theoretical concepts and practical implementation. She has a bright future in software development.',
+    rating: 5,
+  },
+];

@@ -1,31 +1,31 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { FaBars, FaTimes, FaCode } from 'react-icons/fa';
+import { FaBars, FaTimes, FaCode, FaSearch, FaSun, FaMoon } from 'react-icons/fa';
+import { useTheme } from '../context/ThemeContext';
+import { useLang } from '../context/LanguageContext';
 
-const navLinks = [
-  { label: 'About', href: '#about' },
-  { label: 'Skills', href: '#skills' },
-  { label: 'Projects', href: '#projects' },
-  { label: 'Experience', href: '#experience' },
-  { label: 'Certifications', href: '#certifications' },
-  { label: 'Contact', href: '#contact' },
-];
+const navKeys = ['about', 'skills', 'projects', 'experience', 'certifications', 'contact'];
 
-const Navbar = () => {
+const Navbar = ({ onSearchOpen }) => {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [activeSection, setActiveSection] = useState('');
+  const { isDark, toggle: toggleTheme } = useTheme();
+  const { lang, setLanguage, t } = useLang();
+
+  const navLinks = navKeys.map((key) => ({
+    label: t.nav[key],
+    href: `#${key}`,
+    id: key,
+  }));
 
   useEffect(() => {
     const onScroll = () => {
       setScrolled(window.scrollY > 50);
-
-      // Active section detection
-      const sections = navLinks.map((l) => l.href.replace('#', ''));
-      for (let i = sections.length - 1; i >= 0; i--) {
-        const el = document.getElementById(sections[i]);
+      for (let i = navKeys.length - 1; i >= 0; i--) {
+        const el = document.getElementById(navKeys[i]);
         if (el && window.scrollY >= el.offsetTop - 120) {
-          setActiveSection(sections[i]);
+          setActiveSection(navKeys[i]);
           break;
         }
       }
@@ -34,11 +34,22 @@ const Navbar = () => {
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
+  // Ctrl+K / Cmd+K shortcut for search
+  useEffect(() => {
+    const handler = (e) => {
+      if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+        e.preventDefault();
+        onSearchOpen();
+      }
+    };
+    window.addEventListener('keydown', handler);
+    return () => window.removeEventListener('keydown', handler);
+  }, [onSearchOpen]);
+
   const handleNavClick = (href) => {
     setMenuOpen(false);
     const id = href.replace('#', '');
-    const el = document.getElementById(id);
-    if (el) el.scrollIntoView({ behavior: 'smooth' });
+    document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
   };
 
   return (
@@ -48,19 +59,13 @@ const Navbar = () => {
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.6, ease: 'easeOut' }}
         className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-          scrolled
-            ? 'glass-dark shadow-2xl shadow-black/50'
-            : 'bg-transparent'
+          scrolled ? 'glass-dark shadow-2xl shadow-black/50' : 'bg-transparent'
         }`}
       >
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
             {/* Logo */}
-            <motion.a
-              href="#"
-              className="flex items-center gap-2 group"
-              whileHover={{ scale: 1.03 }}
-            >
+            <motion.a href="#" className="flex items-center gap-2 group" whileHover={{ scale: 1.03 }}>
               <div className="w-9 h-9 rounded-lg bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center shadow-lg shadow-blue-500/30">
                 <FaCode className="text-white text-sm" />
               </div>
@@ -72,16 +77,13 @@ const Navbar = () => {
             {/* Desktop Links */}
             <div className="hidden md:flex items-center gap-1">
               {navLinks.map((link) => {
-                const id = link.href.replace('#', '');
-                const isActive = activeSection === id;
+                const isActive = activeSection === link.id;
                 return (
                   <button
-                    key={link.label}
+                    key={link.id}
                     onClick={() => handleNavClick(link.href)}
                     className={`relative px-4 py-2 text-sm font-medium rounded-lg transition-all duration-200 ${
-                      isActive
-                        ? 'text-blue-400'
-                        : 'text-gray-400 hover:text-white hover:bg-white/5'
+                      isActive ? 'text-blue-400' : 'text-gray-400 hover:text-white hover:bg-white/5'
                     }`}
                   >
                     {link.label}
@@ -96,15 +98,47 @@ const Navbar = () => {
               })}
             </div>
 
-            {/* CTA + Hamburger */}
-            <div className="flex items-center gap-3">
+            {/* Right Controls */}
+            <div className="flex items-center gap-2">
+              {/* Search */}
+              <button
+                onClick={onSearchOpen}
+                className="hidden sm:flex items-center gap-2 px-3 py-2 glass border border-white/10 rounded-lg text-gray-400 hover:text-white hover:border-white/20 transition-all text-xs"
+                title="Search (Ctrl+K)"
+              >
+                <FaSearch size={11} />
+                <span className="hidden lg:inline">Search</span>
+                <kbd className="hidden lg:inline text-[10px] bg-white/5 border border-white/10 px-1.5 py-0.5 rounded">⌘K</kbd>
+              </button>
+
+              {/* Language Toggle */}
+              <button
+                onClick={() => setLanguage(lang === 'en' ? 'hi' : 'en')}
+                className="w-9 h-9 glass rounded-lg flex items-center justify-center border border-white/10 hover:border-white/20 text-gray-400 hover:text-white transition-all text-xs font-bold"
+                title={lang === 'en' ? 'Switch to Hindi' : 'Switch to English'}
+              >
+                {lang === 'en' ? 'हि' : 'EN'}
+              </button>
+
+              {/* Theme Toggle */}
+              <button
+                onClick={toggleTheme}
+                className="w-9 h-9 glass rounded-lg flex items-center justify-center border border-white/10 hover:border-white/20 text-gray-400 hover:text-white transition-all"
+                title={isDark ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
+              >
+                {isDark ? <FaSun size={13} /> : <FaMoon size={13} />}
+              </button>
+
+              {/* Hire Me */}
               <a
                 href="#contact"
                 onClick={(e) => { e.preventDefault(); handleNavClick('#contact'); }}
-                className="hidden md:inline-flex items-center gap-2 px-4 py-2 text-sm font-semibold bg-blue-600 hover:bg-blue-500 text-white rounded-lg transition-all duration-200 shadow-lg shadow-blue-600/30 hover:shadow-blue-500/50"
+                className="hidden md:inline-flex items-center gap-2 px-4 py-2 text-sm font-semibold bg-blue-600 hover:bg-blue-500 text-white rounded-lg transition-all duration-200 shadow-lg shadow-blue-600/30"
               >
-                Hire Me
+                {t.nav.hire}
               </a>
+
+              {/* Mobile Hamburger */}
               <button
                 onClick={() => setMenuOpen(!menuOpen)}
                 className="md:hidden w-9 h-9 flex items-center justify-center rounded-lg glass text-gray-300 hover:text-white transition-colors"
@@ -130,20 +164,27 @@ const Navbar = () => {
             <div className="max-w-7xl mx-auto px-6 py-4 flex flex-col gap-1">
               {navLinks.map((link) => (
                 <button
-                  key={link.label}
+                  key={link.id}
                   onClick={() => handleNavClick(link.href)}
                   className="text-left px-4 py-3 text-gray-300 hover:text-white hover:bg-white/5 rounded-lg transition-all duration-200 font-medium"
                 >
                   {link.label}
                 </button>
               ))}
+              {/* Mobile Search */}
+              <button
+                onClick={() => { setMenuOpen(false); onSearchOpen(); }}
+                className="text-left px-4 py-3 text-gray-400 hover:text-white hover:bg-white/5 rounded-lg transition-all flex items-center gap-2"
+              >
+                <FaSearch size={12} /> Search
+              </button>
               <div className="border-t border-white/10 mt-2 pt-3">
                 <a
                   href="#contact"
                   onClick={(e) => { e.preventDefault(); handleNavClick('#contact'); }}
-                  className="inline-flex w-full justify-center items-center px-4 py-3 text-sm font-semibold bg-blue-600 hover:bg-blue-500 text-white rounded-lg transition-all duration-200"
+                  className="flex w-full justify-center px-4 py-3 text-sm font-semibold bg-blue-600 hover:bg-blue-500 text-white rounded-lg transition-all"
                 >
-                  Hire Me
+                  {t.nav.hire}
                 </a>
               </div>
             </div>
