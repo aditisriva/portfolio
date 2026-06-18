@@ -38,29 +38,6 @@
     color: #ffffff;
     font-family: 'Inter', system-ui, -apple-system, sans-serif;
     overflow-x: hidden;
-    transition: background-color 0.3s ease, color 0.3s ease;
-  }
-
-  html.light body {
-    background-color: #F8FAFC;
-    color: #0f172a;
-  }
-
-  html.light .glass {
-    background: rgba(0, 0, 0, 0.05);
-    border-color: rgba(0, 0, 0, 0.1);
-  }
-
-  html.light .glass-dark {
-    background: rgba(255, 255, 255, 0.9);
-    border-color: rgba(0, 0, 0, 0.1);
-  }
-
-  html.light .gradient-text {
-    background: linear-gradient(135deg, #2563EB, #7C3AED, #0891B2);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
   }
 }
 

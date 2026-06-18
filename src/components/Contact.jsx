@@ -43,6 +43,7 @@ const validate = (fields) => {
   }
   if (!fields.subject.trim()) errors.subject = 'Subject is required';
   if (!fields.message.trim()) errors.message = 'Message is required';
+  else if (fields.message.trim().length < 20) errors.message = 'Message must be at least 20 characters';
   return errors;
 };
 

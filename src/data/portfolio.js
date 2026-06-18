@@ -25,7 +25,7 @@ export const education = [
   {
     degree: "Bachelor of Engineering in Computer Science & Engineering",
     school: "IET, Dr. Bhimrao Ambedkar University, Agra",
-    year: "2022 – 2026",
+    year: "2021 – 2024",
     gpa: null,
   },
 ];
@@ -151,7 +151,7 @@ export const projects = [
 
 export const experience = [
   {
-    company: "GoToSIOC Technologies Pvt. Ltd.",
+    company: "OnAMISC Technologies Pvt. Ltd.",
     role: "SDE Trainee (Full Stack)",
     duration: "Jan 2025 – April 2025",
     location: "India",
